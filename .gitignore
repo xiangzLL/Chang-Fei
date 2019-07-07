@@ -1,0 +1,7 @@
+# Generated files
+[Bb]in
+obj/
+.vs/
+
+# Log Files
+*.log

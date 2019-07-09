@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace IM
 {
+    /// <summary>
+    /// IM聊天服务，支持横向扩展
+    /// </summary>
     public class Program
     {
         public static void Main(string[] args)

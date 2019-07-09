@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace OSS
 {
+    /// <summary>
+    /// 对象存储服务，主要保存文件对象，支持横向扩展
+    /// </summary>
     public class Program
     {
         public static void Main(string[] args)

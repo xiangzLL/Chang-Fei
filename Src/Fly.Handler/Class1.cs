@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fly.Socket
+namespace Fly.Handler
 {
     public class Class1
     {

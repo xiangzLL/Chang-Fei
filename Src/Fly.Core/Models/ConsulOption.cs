@@ -23,7 +23,7 @@
         /// <summary>
         /// 服务监控检查地址
         /// </summary>
-        public string ServiceHealthCheck { get; set; }
+        public string ServiceHealthCheck => $"http://{ServiceIp}:{ServicePort}/healthCheck";
 
         /// <summary>
         /// Consul地址

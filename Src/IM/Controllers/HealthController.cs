@@ -6,7 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IM.Controllers
 {
-    public class HealthController:ControllerBase
+    [Route("[controller]/[Action]")]
+    [ApiController]
+    public class HealthController : ControllerBase
     {
+        [HttpGet("/healthCheck")]
+        public IActionResult HealthCheck()
+        {
+            return Ok();
+        }
     }
 }

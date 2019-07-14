@@ -32,16 +32,10 @@ namespace OSS
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseMvc();
 
-            app.RegisterConsul(lifetime,new ConsulOption
-            {
-                ServiceName = Configuration["ServiceName"],
-                ServiceIp = Configuration["ServiceIP"],
-                ServicePort = Convert.ToInt32(Configuration["ServicePort"]),
-                ServiceHealthCheck = Configuration["ServiceHealthCheck"],
-                ConsulAddress = Configuration["ConsulAddress"]
-            });
+            app.RegisterConsul(lifetime,Configuration.Get<ConsulOption>());
         }
     }
 }

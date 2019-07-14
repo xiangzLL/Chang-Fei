@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 namespace OSS
 {
     /// <summary>
-    /// 对象存储服务，主要保存文件对象，支持横向扩展
+    /// 对象存储服务，主要保存文件，支持横向扩展
     /// </summary>
     public class Program
     {

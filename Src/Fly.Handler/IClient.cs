@@ -3,6 +3,9 @@ using Fly.Handler.Channels;
 
 namespace Fly.Handler
 {
+    /// <summary>
+    /// 各协议的Client的接口
+    /// </summary>
     public interface IClient
     {
         /// <summary>

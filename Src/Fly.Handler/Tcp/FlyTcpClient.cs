@@ -7,13 +7,13 @@ using Fly.Handler.Channels;
 namespace Fly.Handler.Tcp
 {
     /// <summary>
-    /// 封装的TcpClient
+    /// Tcp 协议使用的客户端
     /// </summary>
-    public class FlyTcpClient :IClient
+    class FlyTcpClient :IClient
     {
         private readonly TcpClient _client;
-        private readonly BufferedStream _readStream;
-        private readonly BufferedStream _writeStream;
+        private BufferedStream _readStream;
+        private BufferedStream _writeStream;
         private int _sendTimeout;
         private int _readTimeout;
 
@@ -43,8 +43,8 @@ namespace Fly.Handler.Tcp
             }
         }
 
-        public HostInfo Remote { get; }
-        public HostInfo Local { get; }
+        public HostInfo Remote { get; private set; }
+        public HostInfo Local { get; private set; }
         public Stream ReadStream => _readStream;
         public Stream WriteStream => _writeStream;
         public bool Connected { get; private set; }
@@ -60,13 +60,36 @@ namespace Fly.Handler.Tcp
             if (!_client.Connected)
             {
                 _client.Dispose();
-
+                throw new ConnectionTimeoutException();
             }
+            InitializeClient();
+        }
+
+        /// <summary>
+        /// 服务端接收连接使用
+        /// </summary>
+        /// <param name="client">TcpClient</param>
+        public FlyTcpClient(TcpClient client)
+        {
+            _client = client;
+            InitializeClient();
+        }
+
+        private void InitializeClient()
+        {
+            var remoteEndPoint = (IPEndPoint)_client.Client.RemoteEndPoint;
+            Remote = new HostInfo(remoteEndPoint.Address.ToString(), remoteEndPoint.Port, "Server");
+            var localEndPoint = (IPEndPoint)_client.Client.LocalEndPoint;
+            Local = new HostInfo(localEndPoint.Address.ToString(), localEndPoint.Port, "Client");
+            _readStream = new BufferedStream(_client.GetStream());
+            _writeStream = new BufferedStream(_client.GetStream());
+            Connected = true;
         }
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            _client.Dispose();
+            Connected = false;
         }
     }
 }

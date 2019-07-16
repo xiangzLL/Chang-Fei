@@ -94,5 +94,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fly.Handler\Fly.Handler.csproj">
+      <Project>{37563083-a06a-448b-8749-19859c113169}</Project>
+      <Name>Fly.Handler</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

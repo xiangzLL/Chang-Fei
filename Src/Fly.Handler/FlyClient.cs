@@ -1,25 +1,21 @@
-﻿namespace Fly.Handler
+﻿using Fly.Handler.Tcp;
+
+namespace Fly.Handler
 {
     /// <summary>
     /// FlyClient
     /// </summary>
     public class FlyClient:BaseFlyClient
     {
-        /// <summary>
-        /// 创建Tcp协议的客户端
-        /// </summary>
-        public FlyClient()
-        {
-
-        }
+        private readonly IClientCreator _creator;
 
         /// <summary>
-        /// FlyClient
+        /// 创建FlyClient
         /// </summary>
         /// <param name="creator">创建指定协议的客户端</param>
         public FlyClient(IClientCreator creator)
         {
-
+            _creator = creator;
         }
     }
 }

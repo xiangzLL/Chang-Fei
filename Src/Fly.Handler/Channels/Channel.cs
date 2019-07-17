@@ -74,6 +74,13 @@ namespace Fly.Handler.Channels
 
         }
 
+        public void Close()
+        {
+            _client.Disconnect();
+            IsClosed = true;
+            OnClosed();
+        }
+
         protected virtual void OnClosed()
         {
             Closed?.Invoke(this,EventArgs.Empty);
@@ -114,6 +121,44 @@ namespace Fly.Handler.Channels
                     try
                     {
                         _channel._client.ReadTimeout = 0;
+                    }
+                    catch
+                    {
+                        //ignore
+                    }
+                }
+            }
+        }
+
+        private class WriteTimeoutTranscation : IDisposable
+        {
+            private readonly Channel _channel;
+
+            public WriteTimeoutTranscation(Channel channel, int timeout)
+            {
+                _channel = channel;
+                if (_channel._writeTimeoutTranscationLevel == 0)
+                {
+                    try
+                    {
+                        _channel._client.SendTimeout = timeout;
+                    }
+                    catch
+                    {
+                        //ignore
+                    }
+                }
+                _channel._writeTimeoutTranscationLevel++;
+            }
+
+            public void Dispose()
+            {
+                _channel._writeTimeoutTranscationLevel--;
+                if (_channel._writeTimeoutTranscationLevel == 0)
+                {
+                    try
+                    {
+                        _channel._client.SendTimeout = 0;
                     }
                     catch
                     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Fly.Handler.IO;
 
 namespace Fly.Handler.Extensions
 {
@@ -10,6 +11,16 @@ namespace Fly.Handler.Extensions
     public static class ClientExtension
     {
         private const int MaxReadLength = 500000000; //500M
+
+        public static void WriteBuffer(this IClient client,IBuffer buffer)
+        {
+
+        }
+
+        public static IBuffer ReadBuffer(this IClient client)
+        {
+
+        }
 
         public static void WriteString(this IClient client, string value)
         {

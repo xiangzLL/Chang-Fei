@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+package Fly.ProtocolBuf;
+
+option java_package = "com.google.protobuf";
+option java_outer_classname = "AnyProto";
+
+//聊天消息
+message ChatMessage{
+	string Source = 1;//发送端
+	string Target = 2;//对端
+	string Content = 3;//内容
+	
+	enum ChatType{
+		Text = 0; //文字
+		Image = 1; //图像
+		Audio = 2; //音频
+		Video = 3; //视频
+		VideoCall = 4; //音频通话
+		AudioCall = 5; //视频通话
+	}
+	ChatType ContentType = 4; //内容类型
+}
+
+//普通消息
+message CommonMessage{
+	string Source=1; // 发送端
+	
+	enum MessageType{
+		Login = 0;
+		HeartBeat = 1;
+	}
+	MessageType Message =2;  // 消息类型
+}

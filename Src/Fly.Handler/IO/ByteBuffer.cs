@@ -1,4 +1,5 @@
 ﻿using System;
+using Fly.Handler.Utilities;
 
 namespace Fly.Handler.IO
 {
@@ -20,6 +21,11 @@ namespace Fly.Handler.IO
             var bytes = new byte[Size];
             Array.Copy(_data,0,bytes,0,Size);
             return bytes;
+        }
+
+        public override string ToString()
+        {
+            return $"ByteBuffer,Size:{Size}";
         }
     }
 }

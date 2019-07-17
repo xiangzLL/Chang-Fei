@@ -31,7 +31,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{7B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.FChat.Windows", "Src\Fly.FChat.Windows\Fly.FChat.Windows.csproj", "{E0CF408F-C642-4A9B-8433-A7571CADB42B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.Logger", "Src\Fly.Logger\Fly.Logger.csproj", "{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fly.Logger", "Src\Fly.Logger\Fly.Logger.csproj", "{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.ProtocolBuf", "Src\Fly.ProtocolBuf\Fly.ProtocolBuf.csproj", "{0B8DF7EC-FE98-4188-A4D6-919819010A4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B8DF7EC-FE98-4188-A4D6-919819010A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B8DF7EC-FE98-4188-A4D6-919819010A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B8DF7EC-FE98-4188-A4D6-919819010A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B8DF7EC-FE98-4188-A4D6-919819010A4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{EA5DEB01-F5CC-4441-B6E4-8C1536339D8C} = {7BCE7EE1-5988-4894-B176-C165B327AD12}
 		{E0CF408F-C642-4A9B-8433-A7571CADB42B} = {BDA55BD3-3C09-4628-AD1F-3124CEEF976F}
 		{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689} = {0F988A35-3863-45AA-AEBD-4E7E9DF219C2}
+		{0B8DF7EC-FE98-4188-A4D6-919819010A4A} = {294F9489-F45E-4300-80F7-F11E7A1C3D5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE90DB34-B00C-45B0-9EA4-235D6D3BF83D}

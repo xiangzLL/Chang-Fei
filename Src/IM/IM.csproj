@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fly.Core\Fly.Core.csproj" />
     <ProjectReference Include="..\Fly.Handler\Fly.Handler.csproj" />
+    <ProjectReference Include="..\Fly.Logger\Fly.Logger.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Fly.Handler.Channel
+﻿namespace Fly.Handler.Channels
 {
-    class OutputChannel
+    public sealed class OutputChannel:Channel
     {
     }
 }

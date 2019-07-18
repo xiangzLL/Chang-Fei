@@ -95,6 +95,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fly.Client.Core\Fly.Client.Core.csproj">
+      <Project>{dbd87c23-ecbf-496a-8158-61894a179b14}</Project>
+      <Name>Fly.Client.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly.Handler\Fly.Handler.csproj">
       <Project>{37563083-a06a-448b-8749-19859c113169}</Project>
       <Name>Fly.Handler</Name>

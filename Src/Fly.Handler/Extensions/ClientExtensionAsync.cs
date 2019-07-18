@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Fly.Handler.IO;
 
 namespace Fly.Handler.Extensions
 {
@@ -9,6 +10,19 @@ namespace Fly.Handler.Extensions
     /// </summary>
     public static class ClientExtensionAsync
     {
+        public static async Task WriteBufferAsync(this IClient client, IBuffer buffer)
+        {
+            var writer = new BufferWriter(client);
+            await writer.WriteBufferAsync(buffer);
+        }
+
+        public static async Task<IBuffer> ReadBufferAsync(this IClient client)
+        {
+            var reader = new BufferReader(client);
+            var buffer = await reader.ReadBufferAsync();
+            return buffer;
+        }
+
         public static async Task WriteStringAsync(this IClient client, string value)
         {
             var writeData = Encoding.Unicode.GetBytes(value);

@@ -97,7 +97,7 @@ namespace Fly.Handler
     /// </summary>
     public class ErrorDataException : NetworkException
     {
-        public ErrorDataException()
+        public ErrorDataException(string message=""):base(message)
         {
             Name = "ErrorData";
         }

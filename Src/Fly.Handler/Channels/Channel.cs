@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Fly.Handler.Extensions;
+using Fly.Handler.IO;
 
 namespace Fly.Handler.Channels
 {
@@ -56,23 +58,145 @@ namespace Fly.Handler.Channels
 
         protected void ReadHeader(int timeout = 0)
         {
-
+            using (new ReadTimeoutTranscation(this,timeout))
+            {
+                var headerData = _client.ReadBinary(8);
+                if (headerData.Length != 8)
+                {
+                    throw new ErrorDataException("Head data length error.");
+                }
+                var versionData = new byte[2];
+                var xyData = new byte[2];
+                var zData = new short[1];
+                Buffer.BlockCopy(headerData, 0, versionData, 0, versionData.Length);
+                if (versionData[0] != MajorVersion)
+                {
+                    throw new ErrorDataException("Major version not match.");
+                }
+                Buffer.BlockCopy(headerData, 4, xyData, 0, xyData.Length);
+                Buffer.BlockCopy(headerData, 6, zData, 0, zData.Length * sizeof(short));
+                var x = xyData[0];
+                var y = xyData[1];
+                var z = zData[0];
+                //校验数据
+                if (z != x * 3 + y * 3 - (x - y))
+                {
+                    throw new ErrorDataException("Xyz data error.");
+                }
+                DataTransfered += 8;
+            }
         }
 
         protected async Task ReadHeaderAsync(int timeout = 0)
         {
+            using (new ReadTimeoutTranscation(this, timeout))
+            {
+                var headerData = await _client.ReadBinaryAsync(8).ConfigureAwait(false);
+                if (headerData.Length != 8)
+                {
+                    throw new ErrorDataException("Head data length error.");
+                }
+                var versionData = new byte[2];
+                var xyData = new byte[2];
+                var zData = new short[1];
+                Buffer.BlockCopy(headerData, 0, versionData, 0, versionData.Length);
+                if (versionData[0] != MajorVersion)
+                {
+                    throw new ErrorDataException("Major version not match.");
+                }
 
+                Buffer.BlockCopy(headerData, 4, xyData, 0, xyData.Length);
+                Buffer.BlockCopy(headerData, 6, zData, 0, zData.Length * sizeof(short));
+                var x = xyData[0];
+                var y = xyData[1];
+                var z = zData[0];
+                //校验数据
+                if (z != x * 3 + y * 3 - (x - y))
+                {
+                    throw new ErrorDataException("Xyz data error.");
+                }
+                DataTransfered += 8;
+            }
         }
 
         protected void WriteHeader(int timeout = 0)
         {
-
+            using (new WriteTimeoutTranscation(this, timeout))
+            {
+                var headerData = new byte[8];
+                var versionData = new[] { MajorVersion, MinorVersion };
+                var x = (byte)Random.Next(byte.MaxValue);
+                var y = (byte)Random.Next(byte.MaxValue);
+                var z = (short)(x * 3 + y * 3 - (x - y));
+                var xyData = new[] { x, y };
+                var zData = new[] { z };
+                Buffer.BlockCopy(versionData, 0, headerData, 0, versionData.Length);
+                Buffer.BlockCopy(xyData, 0, headerData, 4, xyData.Length);
+                Buffer.BlockCopy(zData, 0, headerData, 6, zData.Length * sizeof(short));
+                //写头文件
+                _client.WriteBinary(headerData);
+                DataTransfered += 8;
+            }
         }
 
         protected async Task WriteHeaderAsync(int timeout = 0)
         {
-
+            using (new WriteTimeoutTranscation(this, timeout))
+            {
+                var headerData = new byte[8];
+                var versionData = new[] { MajorVersion, MinorVersion };
+                var x = (byte)Random.Next(byte.MaxValue);
+                var y = (byte)Random.Next(byte.MaxValue);
+                var z = (short)(x * 3 + y * 3 - (x - y));
+                var xyData = new[] { x, y };
+                var zData = new[] { z };
+                Buffer.BlockCopy(versionData, 0, headerData, 0, versionData.Length);
+                Buffer.BlockCopy(xyData, 0, headerData, 4, xyData.Length);
+                Buffer.BlockCopy(zData, 0, headerData, 6, zData.Length * sizeof(short));
+                //写头文件
+                await _client.WriteBinaryAsync(headerData).ConfigureAwait(false);
+                DataTransfered += 8;
+            }
         }
+
+        protected IBuffer ReadBuffer(int timeout=0)
+        {
+            using (new ReadTimeoutTranscation(this, timeout))
+            {
+                var buffer = _client.ReadBuffer();
+                DataTransfered += buffer.Size;
+                return buffer;
+            }
+        }
+
+        protected async Task<IBuffer> ReadBufferAsync(int timeout = 0)
+        {
+            using (new ReadTimeoutTranscation(this, timeout))
+            {
+                var buffer = await _client.ReadBufferAsync().ConfigureAwait(false);
+                DataTransfered += buffer.Size;
+                return buffer;
+            }
+        }
+
+        protected void WriteBuffer(IBuffer buffer, int timeout = 0)
+        {
+            using (new WriteTimeoutTranscation(this, timeout))
+            {
+                _client.WriteBuffer(buffer);
+                DataTransfered += buffer.Size;
+            }
+        }
+
+        protected async Task WriteBufferAsync(IBuffer buffer, int timeout = 0)
+        {
+            using (new WriteTimeoutTranscation(this, timeout))
+            {
+                await _client.WriteBufferAsync(buffer).ConfigureAwait(false);
+                DataTransfered += buffer.Size;
+            }
+        }
+
 
         public void Close()
         {

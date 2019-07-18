@@ -14,12 +14,15 @@ namespace Fly.Handler.Extensions
 
         public static void WriteBuffer(this IClient client,IBuffer buffer)
         {
-
+            var writer = new BufferWriter(client);
+            writer.WriteBuffer(buffer);
         }
 
         public static IBuffer ReadBuffer(this IClient client)
         {
-
+            var reader = new BufferReader(client);
+            var buffer = reader.ReadBuffer();
+            return buffer;
         }
 
         public static void WriteString(this IClient client, string value)

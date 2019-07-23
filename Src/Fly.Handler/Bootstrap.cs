@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Fly.Handler
+﻿namespace Fly.Handler
 {
-    class Bootstrap
+    public class Bootstrap
     {
     }
 }

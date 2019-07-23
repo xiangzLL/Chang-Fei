@@ -2,7 +2,7 @@
 
 namespace Fly.Handler.Channels
 {
-    public sealed class OutputChannel:Channel
+    public sealed class OutputChannel:AbstractChannel
     {
         private readonly object _sendLock = new object();
 

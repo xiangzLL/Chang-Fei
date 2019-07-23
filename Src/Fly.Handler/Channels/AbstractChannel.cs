@@ -7,7 +7,7 @@ using Fly.Handler.IO;
 
 namespace Fly.Handler.Channels
 {
-    public class Channel
+    public class AbstractChannel
     {
         private static readonly Random Random = new Random();
         private readonly IClient _client;
@@ -43,7 +43,7 @@ namespace Fly.Handler.Channels
         /// </summary>
         public long DataTransfered { get; private set; }
 
-        public Channel(int channelId, IClient client)
+        public AbstractChannel(int channelId, IClient client)
         {
             Id = channelId;
             _client = client;
@@ -217,9 +217,9 @@ namespace Fly.Handler.Channels
 
         private class ReadTimeoutTranscation : IDisposable
         {
-            private readonly Channel _channel;
+            private readonly AbstractChannel _channel;
 
-            public ReadTimeoutTranscation(Channel channel, int timeout)
+            public ReadTimeoutTranscation(AbstractChannel channel, int timeout)
             {
                 _channel = channel;
                 if (_channel._readTimeoutTranscationLevel == 0)
@@ -256,9 +256,9 @@ namespace Fly.Handler.Channels
 
         private class WriteTimeoutTranscation : IDisposable
         {
-            private readonly Channel _channel;
+            private readonly AbstractChannel _channel;
 
-            public WriteTimeoutTranscation(Channel channel, int timeout)
+            public WriteTimeoutTranscation(AbstractChannel channel, int timeout)
             {
                 _channel = channel;
                 if (_channel._writeTimeoutTranscationLevel == 0)

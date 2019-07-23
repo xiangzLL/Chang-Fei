@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fly.Logger", "Src\Fly.Logge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fly.ProtocolBuf", "Src\Fly.ProtocolBuf\Fly.ProtocolBuf.csproj", "{0B8DF7EC-FE98-4188-A4D6-919819010A4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.Client.Core", "Src\Fly.Client.Core\Fly.Client.Core.csproj", "{DBD87C23-ECBF-496A-8158-61894A179B14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fly.Client.Core", "Src\Fly.Client.Core\Fly.Client.Core.csproj", "{DBD87C23-ECBF-496A-8158-61894A179B14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B525225D-C4DF-4AF2-89EA-D058EEDE3471}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

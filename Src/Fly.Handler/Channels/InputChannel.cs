@@ -4,7 +4,7 @@ using Fly.Handler.IO;
 
 namespace Fly.Handler.Channels
 {
-    public sealed class InputChannel:Channel
+    public sealed class InputChannel:AbstractChannel
     {
         internal event EventHandler<BufferEventArgs> BufferReceived;
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Fly.Handler
+﻿namespace Fly.Handler
 {
-    class ServerBootstrap
+    public class ServerBootstrap
     {
     }
 }

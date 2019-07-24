@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fly.Client.Core", "Src\Fly.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B525225D-C4DF-4AF2-89EA-D058EEDE3471}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly.Server.Test", "Src\Test\Fly.Server.Test\Fly.Server.Test.csproj", "{4C75C855-3154-4EB8-A2DC-0C804595DD95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,10 @@ Global
 		{DBD87C23-ECBF-496A-8158-61894A179B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBD87C23-ECBF-496A-8158-61894A179B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBD87C23-ECBF-496A-8158-61894A179B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C75C855-3154-4EB8-A2DC-0C804595DD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C75C855-3154-4EB8-A2DC-0C804595DD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C75C855-3154-4EB8-A2DC-0C804595DD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C75C855-3154-4EB8-A2DC-0C804595DD95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{5C8F6C0C-A2A9-4D2D-81DC-AF91A9DEC689} = {0F988A35-3863-45AA-AEBD-4E7E9DF219C2}
 		{0B8DF7EC-FE98-4188-A4D6-919819010A4A} = {294F9489-F45E-4300-80F7-F11E7A1C3D5F}
 		{DBD87C23-ECBF-496A-8158-61894A179B14} = {BDA55BD3-3C09-4628-AD1F-3124CEEF976F}
+		{4C75C855-3154-4EB8-A2DC-0C804595DD95} = {B525225D-C4DF-4AF2-89EA-D058EEDE3471}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE90DB34-B00C-45B0-9EA4-235D6D3BF83D}

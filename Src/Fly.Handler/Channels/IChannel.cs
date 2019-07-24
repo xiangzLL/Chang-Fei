@@ -1,5 +1,5 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Fly.Handler.IO;
 
 namespace Fly.Handler.Channels
 {
@@ -18,12 +18,10 @@ namespace Fly.Handler.Channels
         /// </summary>
         HostInfo Local { get; }
 
-        Task BindAsync(EndPoint localAddress);
-
-        Task ConnectAsync(EndPoint remoteAddress);
-
-        Task DisconnectAsync();
-
-        Task CloseAsync();
+        /// <summary>
+        /// 写数据
+        /// </summary>
+        /// <returns></returns>
+        Task WriteAsync(IBuffer buffer);
     }
 }

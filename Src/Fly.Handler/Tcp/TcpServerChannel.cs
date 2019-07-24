@@ -18,6 +18,11 @@ namespace Fly.Handler.Tcp
         private TcpListener _listener;
         private volatile bool _running;
 
+        public bool Runnning
+        {
+
+        }
+
         public TcpServerChannel() : base()
         {
 
@@ -27,7 +32,11 @@ namespace Fly.Handler.Tcp
         {
             if (_listener == null)
             {
-
+                var serverAddress = IPAddress.Any;
+                var endPoint = new IPEndPoint(serverAddress,port);
+                _listener = new TcpListener(endPoint);
+                _listener.Start(Environment.ProcessorCount*256);
+                
             }
             else
             {

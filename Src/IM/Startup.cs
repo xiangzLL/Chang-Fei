@@ -1,6 +1,7 @@
 ﻿using Fly.Core.Extensions;
 using Fly.Core.Models;
 using Fly.Logger;
+using IM.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,8 @@ namespace IM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSinglettion<IChatService>(() => new ChatService());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

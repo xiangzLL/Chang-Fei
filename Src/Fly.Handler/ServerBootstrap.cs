@@ -6,13 +6,13 @@ namespace Fly.Handler
     /// <summary>
     /// 服务端入口
     /// </summary>
-    public class ServerBootstrap
+    public class ServerBootstrap<TServerChannel> where TServerChannel : IServerChannel, new()
     {
         private readonly IServerChannel _serverChannel;
 
-        public ServerBootstrap(IServerChannel channel)
+        public ServerBootstrap()
         {
-            _serverChannel = channel;
+            _serverChannel = new TServerChannel();
         }
 
         /// <summary>

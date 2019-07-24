@@ -10,7 +10,7 @@ namespace Fly.Server.Test
 
         static void Main(string[] args)
         {
-            var server = new ServerBootstrap(new TcpServerChannel());
+            var server = new ServerBootstrap<TcpServerChannel>();
 
             server.AddHandler(new EchoServerHandler());
             server.BindAsync(9096).ConfigureAwait(false);

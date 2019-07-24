@@ -2,7 +2,7 @@
 
 namespace IM.Controllers
 {
-    public class MessageController
+    public class ChatController
     {
     }
 }

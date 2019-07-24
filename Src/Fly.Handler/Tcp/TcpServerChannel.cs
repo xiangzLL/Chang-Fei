@@ -1,29 +1,38 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Fly.Handler.Channels;
 
 namespace Fly.Handler.Tcp
 {
-    //开启Tcp监听
-    public class TcpServerChannel:IServerChannel
+    /// <summary>
+    /// Tcp监听通道
+    /// </summary>
+    public class TcpServerChannel:AbstractChannel,IServerChannel
     {
+        private readonly ConcurrentDictionary<string,IClientChannel> _clientChannels = 
+            new ConcurrentDictionary<string, IClientChannel>();
+
         private TcpListener _listener;
         private volatile bool _running;
 
-        public int Id { get; }
-        public bool IsClosed { get; set; }
-        public HostInfo Remote { get; }
-        public HostInfo Local { get; }
-
-        public TcpServerChannel()
+        public TcpServerChannel() : base()
         {
 
         }
 
         public Task BindAsync(int port)
         {
-            throw new System.NotImplementedException();
+            if (_listener == null)
+            {
+
+            }
+            else
+            {
+                throw new InvalidOperationException("Server already start listen");
+            }
         }
 
         public Task CloseAsync()

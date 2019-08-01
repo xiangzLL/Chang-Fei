@@ -11,5 +11,8 @@ namespace Fly.Handler.Channels
         }
 
         internal IBuffer Send()
+        {
+
+        }
     }
 }

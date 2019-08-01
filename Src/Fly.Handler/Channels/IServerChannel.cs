@@ -8,5 +8,6 @@ namespace Fly.Handler.Channels
 
         Task CloseAsync();
 
+        void AddStatusHandler(AbstractClientStatusHandler handler);
     }
 }

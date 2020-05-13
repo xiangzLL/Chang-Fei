@@ -24,6 +24,6 @@ namespace Fly.Handler.Channels
         /// <returns></returns>
         Task WriteAsync(IBuffer buffer);
 
-        void Test();
+         void Test();
     }
 }

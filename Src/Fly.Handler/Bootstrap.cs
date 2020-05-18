@@ -12,7 +12,7 @@ namespace Fly.Handler
     {
         private ChannelContext _channelContext;
 
-        public void Connect(IPEndPoint )
+        public void Connect(IPEndPoint ipEndPoint)
         {
 
             _channelContext.InputChannel.BufferReceived += OnBufferReceived;

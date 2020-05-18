@@ -11,12 +11,19 @@ namespace Fly.Handler
     public class Bootstrap
     {
         private ChannelContext _channelContext;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ipEndPoint"></param>
         public void Connect(IPEndPoint ipEndPoint)
         {
-
             _channelContext.InputChannel.BufferReceived += OnBufferReceived;
             _channelContext.InputChannel.StartReceive();
+        }
+
+        void Test2()
+        {
+
         }
 
         private void OnBufferReceived(object sender, BufferEventArgs e)

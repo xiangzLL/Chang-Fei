@@ -25,7 +25,12 @@ namespace Fly.Handler
         {
 
         }
-
+      
+        void Test1()
+        {
+        
+        }
+        
         private void OnBufferReceived(object sender, BufferEventArgs e)
         {
             Console.WriteLine("客户端收到一条消息");

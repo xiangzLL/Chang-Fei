@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChangFei.Interfaces
+namespace ChangFei.Core
 {
     public class Class1
     {

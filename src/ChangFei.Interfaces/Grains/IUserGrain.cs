@@ -2,7 +2,7 @@
 using ChangFei.Core.Message;
 using Orleans;
 
-namespace ChangFei.Interfaces
+namespace ChangFei.Interfaces.Grains
 {
     /// <summary>
     /// User Grain
@@ -10,22 +10,14 @@ namespace ChangFei.Interfaces
     public interface IUserGrain: IGrainWithStringKey
     {
         /// <summary>
-        /// Change User avatar
-        /// </summary>
-        /// <returns></returns>
-        Task ChangeAvatarAsync();
-
-        /// <summary>
-        /// Request friend 
-        /// </summary>
-        /// <returns></returns>
-        Task RequestFriendAsync();
-
-        /// <summary>
         /// User send message
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
         Task SendMessageAsync(Message message);
+
+        Task Login();
+
+        Task GetOfflineMessages();
     }
 }

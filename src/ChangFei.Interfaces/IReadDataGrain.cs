@@ -2,7 +2,7 @@
 
 namespace ChangFei.Interfaces
 {
-    public interface IGroupGrain:IGrainWithStringKey
+    interface IReadDataGrain:IGrainWithStringKey
     {
     }
 }

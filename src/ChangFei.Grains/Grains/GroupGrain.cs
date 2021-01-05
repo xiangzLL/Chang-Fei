@@ -14,9 +14,12 @@ namespace ChangFei.Grains.Grains
             return base.OnActivateAsync();
         }
 
-        public Task SendChatMessageAsync()
+        public Task SendChatMessageAsync(string userId)
         {
-            
+            throw new System.NotImplementedException();
         }
+
+        
+
     }
 }

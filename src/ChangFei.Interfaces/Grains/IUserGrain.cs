@@ -16,8 +16,12 @@ namespace ChangFei.Interfaces.Grains
         /// <returns></returns>
         Task SendMessageAsync(Message message);
 
-        Task Login();
+        Task ReceiveMessageAsync(Message message);
+
+        Task LoginAsync(IMessageViewer viewer);
 
         Task GetOfflineMessages();
+
+
     }
 }

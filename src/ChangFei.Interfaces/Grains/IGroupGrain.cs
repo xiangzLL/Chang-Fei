@@ -5,6 +5,6 @@ namespace ChangFei.Interfaces.Grains
 {
     public interface IGroupGrain:IGrainWithStringKey
     {
-        Task SendChatMessageAsync();
+        Task SendChatMessageAsync(string userId);
     }
 }

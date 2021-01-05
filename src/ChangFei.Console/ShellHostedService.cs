@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using ChangFei.Core.Message;
+using ChangFei.Interfaces;
+using ChangFei.Interfaces.Grains;
 using Microsoft.Extensions.Hosting;
 using Orleans;
 
@@ -10,6 +14,9 @@ namespace ChangFei.Console
         private readonly IClusterClient _client;
         private readonly IHost _host;
         private Task _execution;
+        private IUserGrain _userGrain;
+        private IMessageViewer _viewer;
+        private string _userId;
 
         public ShellHostedService(IClusterClient client, IHost host)
         {
@@ -34,6 +41,10 @@ namespace ChangFei.Console
             while (true)
             {
                 var command = System.Console.ReadLine();
+                if (command == null)
+                {
+                    continue;
+                }
                 if (command == "/help")
                 {
                     ShowHelp();
@@ -42,9 +53,31 @@ namespace ChangFei.Console
                 {
                     await _host.StopAsync();
                 }
-                else if (command.StartsWith("/user"))
+                else if (command.StartsWith("/login"))
                 {
+                    var match = Regex.Match(command, @"/login (?<userId>\w{1,100})");
+                    if (match.Success)
+                    {
+                        _userId = match.Groups["userId"].Value;
+                        _userGrain = _client.GetGrain<IUserGrain>(_userId);
+                        if (_viewer == null)
+                        {
+                            _viewer = await _client.CreateObjectReference<IMessageViewer>(new MessageConsoleViewer());
+                        }
 
+                        await _userGrain.LoginAsync(_viewer);
+                        System.Console.WriteLine($"The current user is now [{_userId}]");
+                    }
+                }
+                else if (command.StartsWith("/send"))
+                {
+                    var match = Regex.Match(command, @"/send (?<userId>\w{1,100})");
+                    if (match.Success)
+                    {
+                        var targetUserId = match.Groups["userId"].Value;
+                       
+                        await _userGrain.SendMessageAsync(new TextMessage(_userId,targetUserId));
+                    }
                 }
             }
         }

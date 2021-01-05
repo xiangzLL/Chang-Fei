@@ -2,7 +2,7 @@
 {
     public class ImageMessage:Message
     {
-        public ImageMessage(bool isGroup = false) : base(MessageType.Image, isGroup)
+        public ImageMessage(string userId, string targetId) : base(userId, targetId, MessageType.Image)
         {
         }
     }

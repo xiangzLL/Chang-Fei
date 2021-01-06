@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using ChangFei.Core.Message;
 using ChangFei.Interfaces;
@@ -9,28 +10,48 @@ using Orleans;
 
 namespace ChangFei.Grains.Grains
 {
+    /// <summary>
+    /// User state
+    /// </summary>
     public class UserState
     {
+        /// <summary>
+        /// User login state
+        /// </summary>
         public bool Logined { get; set; }
 
+        /// <summary>
+        /// Message observer
+        /// </summary>
         public IMessageViewer Viewer { get; set; }
 
-        public Queue<Message> ReceivedMessages { get; set; }
+        /// <summary>
+        /// UnRead messages
+        /// </summary>
+        public Queue<Message> UnReadMessages { get; set; }
+
+        /// <summary>
+        /// UnRead group messages
+        /// </summary>
+        public Queue<Message> UnReadGroupMessages { get; set; }
     }
 
     public class UserGrain: Grain<UserState>, IUserGrain
     {
-        private IMessageViewer _messageViewer;
-
         public string UserId => this.GetPrimaryKeyString();
 
         #region Grain overrides
 
         public override Task OnActivateAsync()
         {
-            if (State.ReceivedMessages == null)
+            if (State.UnReadMessages == null)
             {
-                State.ReceivedMessages = new Queue<Message>();
+                State.UnReadMessages = new Queue<Message>();
+            }
+
+            if (State.UnReadGroupMessages == null)
+            {
+                State.UnReadGroupMessages = new Queue<Message>();
             }
             return base.OnActivateAsync();
         }
@@ -46,7 +67,7 @@ namespace ChangFei.Grains.Grains
 
         public Task<ImmutableList<Message>> GetOfflineMessages()
         {
-            return Task.FromResult(State.ReceivedMessages.ToImmutableList());
+            return Task.FromResult(State.UnReadMessages.ToImmutableList());
         }
 
         public async Task NewMessageAsync(Message message)
@@ -54,13 +75,33 @@ namespace ChangFei.Grains.Grains
             if (State.Logined)
             {
                 //if user is online, call message observer.
-                _messageViewer.ReceiveUserMessage(Message.ConvertToResponseMessage(message));
+                State.Viewer.ReceiveUserMessage(Message.ConvertToResponseMessage(message));
                 //store transfer message to db
             }
             else
             {
                 //if user is not offline, Store message to queue.
-                State.ReceivedMessages.Enqueue(message);
+                State.UnReadMessages.Enqueue(message);
+                await WriteStateAsync();
+            }
+        }
+
+        /// <summary>
+        /// Receive a new group message
+        /// </summary>
+        /// <param name="message">message</param>
+        /// <returns></returns>
+        public async Task NewGroupMessageAsync(Message message)
+        {
+            if (State.Logined)
+            {
+                //if user is online, call message observer.
+                State.Viewer.ReceiveGroupMessage(message);
+            }
+            else
+            {
+                //if user is not offline, Store message to queue.
+                State.UnReadGroupMessages.Enqueue(message);
                 await WriteStateAsync();
             }
         }
@@ -68,17 +109,36 @@ namespace ChangFei.Grains.Grains
         public async Task LoginAsync(IMessageViewer viewer)
         {
             State.Logined = true;
+            State.Viewer = viewer;
             await WriteStateAsync();
-            _messageViewer = viewer;
             Console.WriteLine($"{UserId} login success.");
         }
 
         public async Task LogoutAsync()
         {
             State.Logined = false;
+            State.Viewer = null;
             await WriteStateAsync();
-            _messageViewer = null;
             Console.WriteLine($"{UserId} logout success");
+        }
+
+        public Task SendGroupMessageAsync(Message message)
+        {
+            //send message to target group
+            var targetGrain = GrainFactory.GetGrain<IGroupGrain>(message.TargetId);
+            return targetGrain.NewMessageAsync(message);
+        }
+
+        public async Task SubscribeAsync(List<string> groupIds)
+        {
+            var groupGrains = new List<IGroupGrain>();
+            groupIds.ForEach(groupId=>groupGrains.Add(GrainFactory.GetGrain<IGroupGrain>(groupId)));
+            await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId,this.AsReference<IGroupMessageSubscriber>())));
+        }
+
+        public Task UnsubscribeAsync(List<string> groupIds)
+        {
+            throw new NotImplementedException();
         }
     }
 }

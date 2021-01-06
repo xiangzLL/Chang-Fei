@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChangFei.Server
+namespace ChangFei.Silo
 {
     class Program
     {

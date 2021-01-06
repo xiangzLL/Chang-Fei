@@ -1,10 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Orleans;
 
 namespace ChangFei.Interfaces.Grains
 {
-    public interface IGroupGrain:IGrainWithStringKey
+    public interface IGroupGrain: IMessageSender, IMessageSubscriber
     {
-        Task SendChatMessageAsync(string userId);
     }
 }

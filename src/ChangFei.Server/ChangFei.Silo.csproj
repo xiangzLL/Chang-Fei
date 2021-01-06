@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ChangFei.Grains\ChangFei.Grains.csproj" />
+  </ItemGroup>
+
 </Project>

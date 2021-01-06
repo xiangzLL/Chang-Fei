@@ -70,6 +70,7 @@ namespace ChangFei.Grains.Grains
             State.Logined = true;
             await WriteStateAsync();
             _messageViewer = viewer;
+            Console.WriteLine($"{UserId} login success.");
         }
 
         public async Task LogoutAsync()
@@ -77,6 +78,7 @@ namespace ChangFei.Grains.Grains
             State.Logined = false;
             await WriteStateAsync();
             _messageViewer = null;
+            Console.WriteLine($"{UserId} logout success");
         }
     }
 }

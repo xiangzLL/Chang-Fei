@@ -10,7 +10,7 @@ namespace ChangFei.Console
     {
         public void ReceiveUserMessage(Message message)
         {
-            System.Console.WriteLine($"User {message.UserId}: {message.Content}");
+            System.Console.WriteLine($"Receive {message.TargetId}: {message.Content}");
         }
 
         public void ReceiveGroupMessage(Message message)

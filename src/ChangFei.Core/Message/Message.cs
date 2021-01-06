@@ -39,7 +39,7 @@
 
         public MessageType MessageType { get; }
 
-        public string Content { get; }
+        public string Content { get; protected set; }
 
         protected Message(string userId,string targetId, MessageType messageType)
         {

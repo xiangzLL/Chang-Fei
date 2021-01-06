@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ChangFei.Core.Message;
@@ -67,16 +68,27 @@ namespace ChangFei.Console
 
                         await _userGrain.LoginAsync(_viewer);
                         System.Console.WriteLine($"The current user is now [{_userId}]");
+                        var offlineMessages = await _userGrain.GetOfflineMessages();
+                        System.Console.WriteLine($"Receive offline messages: {offlineMessages.Count}");
+                        foreach (var message in offlineMessages)
+                        {
+                            System.Console.WriteLine($"Receive {message.TargetId}: {message.Content}");
+                        }
                     }
                 }
                 else if (command.StartsWith("/send"))
                 {
-                    var match = Regex.Match(command, @"/send (?<userId>\w{1,100})");
+                    var match = Regex.Match(command, @"/send (?<userId>\w{1,100}) (?<message>.+)");
                     if (match.Success)
                     {
                         var targetUserId = match.Groups["userId"].Value;
-                       
-                        await _userGrain.SendMessageAsync(new TextMessage(_userId,targetUserId));
+                        var message = match.Groups["message"].Value;
+                        await _userGrain.SendMessageAsync(new TextMessage(_userId, targetUserId, message));
+                        System.Console.WriteLine($"Send {targetUserId} the new message!");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Invalid send. Try again or type /help for a list of commands.");
                     }
                 }
             }
@@ -91,6 +103,8 @@ namespace ChangFei.Console
                 System.Console.WriteLine("These are the available commands:");
             }
             System.Console.WriteLine("/help: Shows this list.");
+            System.Console.WriteLine("/login <userId>: Login a active account.");
+            System.Console.WriteLine("/send <userId> <message>: Send a message to the active account.");
         }
     }
 }

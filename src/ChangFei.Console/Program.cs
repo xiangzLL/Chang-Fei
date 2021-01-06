@@ -16,7 +16,7 @@ namespace ChangFei.Console
                     .AddSingleton(_ => _.GetService<ClusterClientHostedService>().Client)
                     .AddSingleton<IHostedService, ShellHostedService>()
                     .Configure<ConsoleLifetimeOptions>(_ => { _.SuppressStatusMessages = true; }))
-                .ConfigureLogging(builder=>builder.AddDebug())
+                .ConfigureLogging(builder=>builder.AddConsole())
                 .RunConsoleAsync();
         }
     }

@@ -21,7 +21,7 @@ namespace ChangFei.Silo
                     .UseMongoDBClient("mongodb://localhost/ChangFei")
                     .AddMongoDBGrainStorage("MessageStore", options =>
                     {
-                        options.DatabaseName = "ChangFei";
+                        options.DatabaseName = "ChangFei-IM";
                         options.ConfigureJsonSerializerSettings = settings =>
                         {
                             settings.NullValueHandling = NullValueHandling.Include;

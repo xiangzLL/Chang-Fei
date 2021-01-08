@@ -1,4 +1,6 @@
-﻿namespace ChangFei.Core.Message
+﻿using System;
+
+namespace ChangFei.Core.Message
 {
     public enum MessageType
     {
@@ -41,11 +43,16 @@
 
         public string Content { get; protected set; }
 
+        public string SendTime { get; private set; }
+
+        public string ReceiveTime { get; private set; }
+
         protected Message(string userId,string targetId, MessageType messageType)
         {
             UserId = userId;
             TargetId = targetId;
             MessageType = messageType;
+            SendTime = DateTime.Now.ToString("yyyy-mm-dd hh:MM:ss");
         }
 
         /// <summary>

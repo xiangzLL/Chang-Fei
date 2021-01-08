@@ -18,6 +18,11 @@ namespace ChangFei.Grains.Grains
     public class UserState
     {
         /// <summary>
+        /// User Id
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
         /// User login state
         /// </summary>
         public bool Logined { get; set; }
@@ -47,6 +52,8 @@ namespace ChangFei.Grains.Grains
 
         public override Task OnActivateAsync()
         {
+            State.UserId = this.GetPrimaryKeyString();
+
             if (State.UnReadMessages == null)
             {
                 State.UnReadMessages = new Queue<Message>();

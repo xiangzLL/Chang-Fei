@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ChangFei.Core.Message;
 using ChangFei.Interfaces.Grains;
 using Orleans;
+using Orleans.Providers;
 
 namespace ChangFei.Grains.Grains
 {
@@ -15,6 +16,7 @@ namespace ChangFei.Grains.Grains
         public Dictionary<string,IGroupMessageSubscriber> Users { get; set; }
     }
 
+    [StorageProvider(ProviderName = "MessageStore")]
     public class GroupGrain: Grain<GroupState>,IGroupGrain
     {
         public string GroupId => this.GetPrimaryKeyString();

@@ -7,12 +7,14 @@ using ChangFei.Core.Message;
 using ChangFei.Interfaces;
 using ChangFei.Interfaces.Grains;
 using Orleans;
+using Orleans.Providers;
 
 namespace ChangFei.Grains.Grains
 {
     /// <summary>
     /// User state
     /// </summary>
+    [Serializable]
     public class UserState
     {
         /// <summary>
@@ -36,6 +38,7 @@ namespace ChangFei.Grains.Grains
         public Queue<Message> UnReadGroupMessages { get; set; }
     }
 
+    [StorageProvider(ProviderName = "MessageStore")]
     public class UserGrain: Grain<UserState>, IUserGrain
     {
         public string UserId => this.GetPrimaryKeyString();

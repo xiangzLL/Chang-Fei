@@ -3,8 +3,8 @@ using ChangFei.Core.Message;
 
 namespace ChangFei.Grains.Repositories
 {
-    public interface IIMDataRepository
+    public interface IIMDataRepository<T>
     {
-        Task InsertData(Message message);
+        Task InsertData<T>(T message);
     }
 }

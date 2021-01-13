@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ChangFei.Core.Message;
 using ChangFei.Grains.Repositories;
 
 namespace ChangFei.Silo.Repositories
 {
-    public class IMDataRepositories:IIMDataRepository
+    public class IMDataRepositories<T>:IIMDataRepository<T>
     {
-        public Task InsertData(Message message)
+        public Task InsertData<T>(T message)
         {
             throw new NotImplementedException();
         }

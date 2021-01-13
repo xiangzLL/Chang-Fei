@@ -23,11 +23,7 @@ namespace ChangFei.Core.Message
         /// <summary>
         /// System message
         /// </summary>
-        System,
-        /// <summary>
-        /// Request add friend
-        /// </summary>
-        RequestFriend,
+        System
     }
 
     /// <summary>

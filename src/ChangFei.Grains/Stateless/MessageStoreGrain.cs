@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ChangFei.Grains.Entity;
 using ChangFei.Grains.Repositories;
 using ChangFei.Interfaces;
+using Orleans;
 using Orleans.Concurrency;
 
 namespace ChangFei.Grains.Stateless
 {
     [StatelessWorker]
-    public class MessageStoreGrain : Orleans.Grain, IMessageStoreGrain
+    public class MessageStoreGrain : Grain,IMessageStoreGrain
     {
         private readonly IMessageRepository _dataRepository;
 

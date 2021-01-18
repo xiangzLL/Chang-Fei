@@ -92,7 +92,7 @@ namespace ChangFei.Grains.Grains
                 //if user is online, call message observer.
                 State.Viewer.ReceiveUserMessage(Message.ConvertToResponseMessage(message));
                 //store message to db
-                var messageStoreGrain = GrainFactory.GetGrain<IMessageStoreGrain>(Guid.Empty);
+                var targetGrain = GrainFactory.GetGrain<IMessageStoreGrain>(0);
             }
             else
             {

@@ -7,16 +7,16 @@ using Orleans.Concurrency;
 namespace ChangFei.Grains.Stateless
 {
     [StatelessWorker]
-    public class WriteDataGrain : Orleans.Grain, IWriteDataGrain
+    public class MessageStoreGrain : Orleans.Grain, IMessageStoreGrain
     {
-        private readonly IIMDataRepository _dataRepository;
+        private readonly IMessageRepository _dataRepository;
 
-        public WriteDataGrain(IIMDataRepository dataRepository)
+        public MessageStoreGrain(IMessageRepository dataRepository)
         {
             _dataRepository = dataRepository;
         }
 
-        public Task StoreData()
+        public Task StoreMessage()
         {
             throw new NotImplementedException();
         }

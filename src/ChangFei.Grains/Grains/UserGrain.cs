@@ -33,6 +33,11 @@ namespace ChangFei.Grains.Grains
         public IMessageViewer Viewer { get; set; }
 
         /// <summary>
+        /// UnRead message count
+        /// </summary>
+        public int UnReadMessagesCount { get; set; }
+
+        /// <summary>
         /// UnRead messages
         /// </summary>
         public Queue<Message> UnReadMessages { get; set; }

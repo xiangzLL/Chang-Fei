@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ChangFei.Core.Message;
@@ -17,6 +18,8 @@ namespace ChangFei.Console
         private IUserGrain _userGrain;
         private IMessageViewer _viewer;
         private string _userId;
+        private string _targetUserId;
+        private bool _inChat;
 
         public ShellHostedService(IClusterClient client, IHost host)
         {
@@ -53,6 +56,23 @@ namespace ChangFei.Console
                 {
                     await _host.StopAsync();
                 }
+                else if (command == "/exit")
+                {
+                    _targetUserId = string.Empty;
+                    _inChat = false;
+                    System.Console.WriteLine($"=====================================================");
+                }
+                else if (command == "/chat")
+                {
+                    var match = Regex.Match(command, @"/login (?<userId>\w{1,100})");
+                    if (match.Success)
+                    {
+                        _targetUserId = match.Groups["userId"].Value;
+                        _inChat = true;
+                        System.Console.WriteLine($"=====================================================");
+                    }
+                }
+
                 else if (command.StartsWith("/login"))
                 {
                     var match = Regex.Match(command, @"/login (?<userId>\w{1,100})");
@@ -64,7 +84,6 @@ namespace ChangFei.Console
                         {
                             _viewer = await _client.CreateObjectReference<IMessageViewer>(new MessageConsoleViewer());
                         }
-
                         await _userGrain.LoginAsync(_viewer);
                         System.Console.WriteLine($"The current user is now [{_userId}]");
                         var offlineMessages = await _userGrain.GetOfflineMessages();
@@ -77,13 +96,13 @@ namespace ChangFei.Console
                 }
                 else if (command.StartsWith("/send"))
                 {
-                    var match = Regex.Match(command, @"/send (?<userId>\w{1,100}) (?<message>.+)");
+                    var match = Regex.Match(command, @"/send (?<message>.+)");
                     if (match.Success)
                     {
-                        var targetUserId = match.Groups["userId"].Value;
                         var message = match.Groups["message"].Value;
-                        await _userGrain.SendMessageAsync(new TextMessage(_userId, targetUserId, message));
-                        System.Console.WriteLine($"Send {targetUserId} the new message!");
+                        await _userGrain.SendMessageAsync(new TextMessage(_userId, _targetUserId, message));
+                        System.Console.ForegroundColor = ConsoleColor.Blue;
+                        System.Console.WriteLine($"{_userId}: {message}");
                     }
                     else
                     {
@@ -103,6 +122,8 @@ namespace ChangFei.Console
             }
             System.Console.WriteLine("/help: Shows this list.");
             System.Console.WriteLine("/login <userId>: Login a active account.");
+            System.Console.WriteLine("/chat <userId>: Start chat with account.");
+            System.Console.WriteLine("/exit: Exit account chat.");
             System.Console.WriteLine("/send <userId> <message>: Send a message to the active account.");
         }
     }

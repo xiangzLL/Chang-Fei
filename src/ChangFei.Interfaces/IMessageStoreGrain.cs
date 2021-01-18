@@ -3,8 +3,8 @@ using Orleans;
 
 namespace ChangFei.Interfaces
 {
-    public interface IMessageStoreGrain:IGrainWithStringKey
+    public interface IMessageStoreGrain:IGrain
     {
-        Task StoreMessage();
+        Task StoreMessageAsync();
     }
 }

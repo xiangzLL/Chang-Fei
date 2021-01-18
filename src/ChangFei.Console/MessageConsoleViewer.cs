@@ -1,4 +1,5 @@
-﻿using ChangFei.Core.Message;
+﻿using System;
+using ChangFei.Core.Message;
 using ChangFei.Interfaces;
 
 namespace ChangFei.Console
@@ -10,12 +11,14 @@ namespace ChangFei.Console
     {
         public void ReceiveUserMessage(Message message)
         {
-            System.Console.WriteLine($"============= User {message.TargetId}: {message.Content}");
+            System.Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine($"{message.TargetId}: {message.Content}");
         }
 
         public void ReceiveGroupMessage(Message message)
         {
-            System.Console.WriteLine($"============= Group {message.UserId}: {message.MessageType}");
+            System.Console.ForegroundColor = ConsoleColor.Green;
+            System.Console.WriteLine($"{message.TargetId}: {message.Content}");
         }
     }
 }

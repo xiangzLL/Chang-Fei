@@ -11,9 +11,4 @@ namespace ChangFei.Interfaces.Grains
 
         Task<ImmutableList<Message>> GetOfflineMessages();
     }
-
-    public interface IGroupMessageSender : IGrainWithStringKey
-    {
-        Task SendGroupMessageAsync(Message message);
-    }
 }

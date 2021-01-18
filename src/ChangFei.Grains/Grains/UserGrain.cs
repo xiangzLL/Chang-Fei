@@ -35,17 +35,12 @@ namespace ChangFei.Grains.Grains
         /// <summary>
         /// UnRead message count
         /// </summary>
-        public int UnReadMessagesCount { get; set; }
+        public int UnReadMessagesCount => UnReadMessages.Count;
 
         /// <summary>
         /// UnRead messages
         /// </summary>
         public Queue<Message> UnReadMessages { get; set; }
-
-        /// <summary>
-        /// UnRead group messages
-        /// </summary>
-        public Queue<Message> UnReadGroupMessages { get; set; }
     }
 
     [StorageProvider(ProviderName = "MessageStore")]
@@ -64,10 +59,6 @@ namespace ChangFei.Grains.Grains
                 State.UnReadMessages = new Queue<Message>();
             }
 
-            if (State.UnReadGroupMessages == null)
-            {
-                State.UnReadGroupMessages = new Queue<Message>();
-            }
             return base.OnActivateAsync();
         }
 
@@ -75,7 +66,12 @@ namespace ChangFei.Grains.Grains
 
         public Task SendMessageAsync(Message message)
         {
-            //send message to target user
+            if (message.IsGroup)
+            {
+                //send message to target group
+                var groupGrain = GrainFactory.GetGrain<IGroupGrain>(message.TargetId);
+                return groupGrain.NewMessageAsync(message);
+            }
             var targetGrain = GrainFactory.GetGrain<IUserGrain>(message.TargetId);
             return targetGrain.NewMessageAsync(message);
         }
@@ -90,7 +86,7 @@ namespace ChangFei.Grains.Grains
             if (State.Logined)
             {
                 //if user is online, call message observer.
-                State.Viewer.ReceiveUserMessage(Message.ConvertToResponseMessage(message));
+                State.Viewer.NewMessageAsync(Message.ConvertToResponseMessage(message));
                 //store message to db
                 var targetGrain = GrainFactory.GetGrain<IMessageStoreGrain>(0);
             }
@@ -98,26 +94,6 @@ namespace ChangFei.Grains.Grains
             {
                 //if user is not offline, Store message to queue.
                 State.UnReadMessages.Enqueue(message);
-                await WriteStateAsync();
-            }
-        }
-
-        /// <summary>
-        /// Receive a new group message
-        /// </summary>
-        /// <param name="message">message</param>
-        /// <returns></returns>
-        public async Task NewGroupMessageAsync(Message message)
-        {
-            if (State.Logined)
-            {
-                //if user is online, call message observer.
-                State.Viewer.ReceiveGroupMessage(message);
-            }
-            else
-            {
-                //if user is not offline, Store message to queue.
-                State.UnReadGroupMessages.Enqueue(message);
                 await WriteStateAsync();
             }
         }
@@ -138,18 +114,11 @@ namespace ChangFei.Grains.Grains
             Console.WriteLine($"{UserId} logout success");
         }
 
-        public Task SendGroupMessageAsync(Message message)
-        {
-            //send message to target group
-            var targetGrain = GrainFactory.GetGrain<IGroupGrain>(message.TargetId);
-            return targetGrain.NewMessageAsync(message);
-        }
-
         public async Task SubscribeAsync(List<string> groupIds)
         {
             var groupGrains = new List<IGroupGrain>();
             groupIds.ForEach(groupId=>groupGrains.Add(GrainFactory.GetGrain<IGroupGrain>(groupId)));
-            await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId,this.AsReference<IGroupMessageSubscriber>())));
+            await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId,this.AsReference<IMessageSubscriber>())));
         }
 
         public Task UnsubscribeAsync(List<string> groupIds)

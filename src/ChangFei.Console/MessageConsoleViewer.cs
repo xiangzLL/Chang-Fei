@@ -9,13 +9,7 @@ namespace ChangFei.Console
     /// </summary>
     public class MessageConsoleViewer:IMessageViewer
     {
-        public void ReceiveUserMessage(Message message)
-        {
-            System.Console.ForegroundColor = ConsoleColor.Green;
-            System.Console.WriteLine($"{message.TargetId}: {message.Content}");
-        }
-
-        public void ReceiveGroupMessage(Message message)
+        public void NewMessageAsync(Message message)
         {
             System.Console.ForegroundColor = ConsoleColor.Green;
             System.Console.WriteLine($"{message.TargetId}: {message.Content}");

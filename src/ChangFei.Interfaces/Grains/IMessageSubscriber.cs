@@ -8,9 +8,4 @@ namespace ChangFei.Interfaces.Grains
     {
         Task NewMessageAsync(Message message);
     }
-
-    public interface IGroupMessageSubscriber : IGrainWithStringKey
-    {
-        Task NewGroupMessageAsync(Message message);
-    }
 }

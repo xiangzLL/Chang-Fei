@@ -4,7 +4,7 @@ namespace ChangFei.Interfaces.Grains
 {
     public interface IGroupGrain: IMessageSubscriber
     {
-        Task SubscribeAsync(string userId, IGroupMessageSubscriber viewer);
+        Task SubscribeAsync(string userId, IMessageSubscriber viewer);
 
         Task UnsubscribeAsync(string userId);
     }

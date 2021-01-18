@@ -17,7 +17,7 @@ namespace ChangFei.Grains.Entity
         /// </summary>
         public User Recipient { get; set; }
 
-        public BaseMessage Message { get; set; }
+        public object Message { get; set; }
 
         public DateTime SendTime { get; set; }
 

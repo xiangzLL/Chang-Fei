@@ -13,7 +13,7 @@ namespace ChangFei.Grains.Grains
         /// <summary>
         /// Users are contained in group.
         /// </summary>
-        public Dictionary<string,IGroupMessageSubscriber> Users { get; set; }
+        public Dictionary<string,IMessageSubscriber> Users { get; set; }
     }
 
     [StorageProvider(ProviderName = "MessageStore")]
@@ -27,7 +27,7 @@ namespace ChangFei.Grains.Grains
         {
             if (State.Users == null)
             {
-                State.Users = new Dictionary<string, IGroupMessageSubscriber>();
+                State.Users = new Dictionary<string, IMessageSubscriber>();
             }
             return base.OnActivateAsync();
         }
@@ -36,16 +36,14 @@ namespace ChangFei.Grains.Grains
 
         public async Task NewMessageAsync(Message message)
         {
-            //store this message record to db
-
             //publish message to other users, beside original user
             foreach (var user in State.Users.Where(user => user.Key != message.UserId))
             {
-                await user.Value.NewGroupMessageAsync(Message.ConvertToResponseMessage(message));
+                await user.Value.NewMessageAsync(Message.ConvertToResponseMessage(message));
             }
         }
 
-        public Task SubscribeAsync(string userId, IGroupMessageSubscriber viewer)
+        public Task SubscribeAsync(string userId, IMessageSubscriber viewer)
         {
             State.Users[userId] = viewer;
             return Task.CompletedTask;

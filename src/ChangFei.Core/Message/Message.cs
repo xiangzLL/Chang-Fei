@@ -43,6 +43,8 @@ namespace ChangFei.Core.Message
 
         public string ReceiveTime { get; private set; }
 
+        public bool IsGroup { get; set; }
+
         protected Message(string userId,string targetId, MessageType messageType)
         {
             UserId = userId;

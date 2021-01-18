@@ -9,15 +9,9 @@ namespace ChangFei.Interfaces
     public interface IMessageViewer:IGrainObserver
     {
         /// <summary>
-        /// Receive a user message
+        /// Received a new message
         /// </summary>
-        /// <param name="message">User message</param>
-        void ReceiveUserMessage(Message message);
-
-        /// <summary>
-        /// Receive a group message
-        /// </summary>
-        /// <param name="message">Group message</param>
-        void ReceiveGroupMessage(Message message);
+        /// <param name="message">Message</param>
+        void NewMessageAsync(Message message);
     }
 }

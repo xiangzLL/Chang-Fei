@@ -9,6 +9,6 @@ namespace ChangFei.Interfaces.Grains
     {
         Task SendMessageAsync(Message message);
 
-        Task<ImmutableList<Message>> GetOfflineMessages();
+        Task<ImmutableList<Message>> GetUnReadMessages(int limit);
     }
 }

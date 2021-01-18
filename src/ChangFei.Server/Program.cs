@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,6 +18,7 @@ namespace ChangFei.Silo
         {
             Console.Title = nameof(Silo);
             return new HostBuilder()
+                .ConfigureAppConfiguration(ConfigureAppConfiguration)
                 .ConfigureServices(ConfigureServices)
                 .UseOrleans((context,builder) => builder
                     .UseLocalhostClustering()
@@ -23,7 +26,7 @@ namespace ChangFei.Silo
                     .UseMongoDBClient(context.Configuration.GetSection("persistenceOptions")["connectionString"])
                     .AddMongoDBGrainStorage("MessageStore", options =>
                     {
-                        options.DatabaseName = "ChangFei-IM";
+                        options.DatabaseName = context.Configuration.GetSection("persistenceOptions")["databaseName"];
                         options.ConfigureJsonSerializerSettings = settings =>
                         {
                             settings.NullValueHandling = NullValueHandling.Include;
@@ -41,6 +44,12 @@ namespace ChangFei.Silo
         private static void ConfigureApplicationParts(IApplicationPartManager parts)
         {
             parts.AddFromApplicationBaseDirectory().WithReferences();
+        }
+
+        private static void ConfigureAppConfiguration(IConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false, false);
         }
 
         private static void ConfigureServices(Microsoft.Extensions.Hosting.HostBuilderContext context, IServiceCollection services)

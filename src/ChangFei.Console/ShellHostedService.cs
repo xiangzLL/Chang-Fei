@@ -86,9 +86,9 @@ namespace ChangFei.Console
                         }
                         await _userGrain.LoginAsync(_viewer);
                         System.Console.WriteLine($"The current user is now [{_userId}]");
-                        var offlineMessages = await _userGrain.GetOfflineMessages();
-                        System.Console.WriteLine($"Receive offline messages: {offlineMessages.Count}");
-                        foreach (var message in offlineMessages)
+                        var unReadMessages = await _userGrain.GetUnReadMessages(100);
+                        System.Console.WriteLine($"Receive offline messages: {unReadMessages.Count}");
+                        foreach (var message in unReadMessages)
                         {
                             System.Console.WriteLine($"Receive {message.TargetId}: {message.Content}");
                         }
@@ -124,7 +124,7 @@ namespace ChangFei.Console
             System.Console.WriteLine("/login <userId>: Login a active account.");
             System.Console.WriteLine("/chat <userId>: Start chat with account.");
             System.Console.WriteLine("/exit: Exit account chat.");
-            System.Console.WriteLine("/send <userId> <message>: Send a message to the active account.");
+            System.Console.WriteLine("/send <message>: Send a message to the active account.");
         }
     }
 }

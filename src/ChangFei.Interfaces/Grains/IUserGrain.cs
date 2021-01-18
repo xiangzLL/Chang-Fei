@@ -19,11 +19,15 @@ namespace ChangFei.Interfaces.Grains
         /// <returns></returns>
         Task SubscribeAsync(List<string> groupIds);
 
+        Task SubscribeAsync(string groupId);
+
         /// <summary>
         /// User unsubscribe group message
         /// </summary>
         /// <param name="groupIds">Group id list</param>
         /// <returns></returns>
         Task UnsubscribeAsync(List<string> groupIds);
+
+        Task UnSubscribeAsync(string userId);
     }
 }

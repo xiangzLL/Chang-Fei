@@ -76,7 +76,7 @@ namespace ChangFei.Grains.Grains
             return targetGrain.NewMessageAsync(message);
         }
 
-        public Task<ImmutableList<Message>> GetOfflineMessages()
+        public Task<ImmutableList<Message>> GetUnReadMessages(int limit)
         {
             return Task.FromResult(State.UnReadMessages.ToImmutableList());
         }
@@ -121,7 +121,17 @@ namespace ChangFei.Grains.Grains
             await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId,this.AsReference<IMessageSubscriber>())));
         }
 
+        public Task SubscribeAsync(string groupId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task UnsubscribeAsync(List<string> groupIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnSubscribeAsync(string userId)
         {
             throw new NotImplementedException();
         }

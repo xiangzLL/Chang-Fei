@@ -37,10 +37,8 @@ namespace ChangFei.Grains.Grains
         public async Task NewMessageAsync(Message message)
         {
             //publish message to other users, beside original user
-            foreach (var user in State.Users.Where(user => user.Key != message.UserId))
-            {
-                await user.Value.NewMessageAsync(Message.ConvertToResponseMessage(message));
-            }
+            var users = State.Users.Where(user => user.Key != message.Sender).Select(user=>user.Value);
+            await Task.WhenAll(users.Select(user => user.NewMessageAsync(message)));
         }
 
         public Task SubscribeAsync(string userId, IMessageSubscriber viewer)

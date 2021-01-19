@@ -64,38 +64,23 @@ namespace ChangFei.Grains.Grains
 
         #endregion
 
+        #region User Behaviors
+
         public Task SendMessageAsync(Message message)
         {
-            if (message.IsGroup)
+            if (message.IsGroup) //send message to target group
             {
-                //send message to target group
-                var groupGrain = GrainFactory.GetGrain<IGroupGrain>(message.TargetId);
+                var groupGrain = GrainFactory.GetGrain<IGroupGrain>(message.Recipient);
                 return groupGrain.NewMessageAsync(message);
             }
-            var targetGrain = GrainFactory.GetGrain<IUserGrain>(message.TargetId);
+
+            var targetGrain = GrainFactory.GetGrain<IUserGrain>(message.Recipient);
             return targetGrain.NewMessageAsync(message);
         }
 
         public Task<ImmutableList<Message>> GetUnReadMessages(int limit)
         {
             return Task.FromResult(State.UnReadMessages.ToImmutableList());
-        }
-
-        public async Task NewMessageAsync(Message message)
-        {
-            if (State.Logined)
-            {
-                //if user is online, call message observer.
-                State.Viewer.NewMessageAsync(Message.ConvertToResponseMessage(message));
-                //store message to db
-                var targetGrain = GrainFactory.GetGrain<IMessageStoreGrain>(0);
-            }
-            else
-            {
-                //if user is not offline, Store message to queue.
-                State.UnReadMessages.Enqueue(message);
-                await WriteStateAsync();
-            }
         }
 
         public async Task LoginAsync(IMessageViewer viewer)
@@ -117,8 +102,8 @@ namespace ChangFei.Grains.Grains
         public async Task SubscribeAsync(List<string> groupIds)
         {
             var groupGrains = new List<IGroupGrain>();
-            groupIds.ForEach(groupId=>groupGrains.Add(GrainFactory.GetGrain<IGroupGrain>(groupId)));
-            await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId,this.AsReference<IMessageSubscriber>())));
+            groupIds.ForEach(groupId => groupGrains.Add(GrainFactory.GetGrain<IGroupGrain>(groupId)));
+            await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId, this.AsReference<IMessageSubscriber>())));
         }
 
         public Task SubscribeAsync(string groupId)
@@ -135,5 +120,30 @@ namespace ChangFei.Grains.Grains
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region New Message
+
+        public async Task NewMessageAsync(Message message)
+        {
+            if (State.Logined)
+            {
+                //if user is online, call message observer.
+                State.Viewer.NewMessageAsync(message);
+                //store message to db
+                var targetGrain = GrainFactory.GetGrain<IMessageStoreGrain>(0);
+                await targetGrain.StoreMessageAsync(message);
+            }
+            else
+            {
+                //if user is not offline, Store message to queue.
+                State.UnReadMessages.Enqueue(message);
+                await WriteStateAsync();
+            }
+        }
+
+        #endregion
+
     }
 }

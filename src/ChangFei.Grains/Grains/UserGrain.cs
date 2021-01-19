@@ -25,7 +25,7 @@ namespace ChangFei.Grains.Grains
         /// <summary>
         /// User login state
         /// </summary>
-        public bool Logined { get; set; }
+        public bool IsLogin { get; set; }
 
         /// <summary>
         /// Message observer
@@ -85,15 +85,20 @@ namespace ChangFei.Grains.Grains
 
         public async Task LoginAsync(IMessageViewer viewer)
         {
-            State.Logined = true;
+            State.IsLogin = true;
             State.Viewer = viewer;
+            Console.WriteLine($"{UserId} login success, start dispatch unread messages.");
+            while (State.UnReadMessages.Count > 0)
+            {
+                viewer.NewMessageAsync(State.UnReadMessages.Dequeue());
+            }
             await WriteStateAsync();
             Console.WriteLine($"{UserId} login success.");
         }
 
         public async Task LogoutAsync()
         {
-            State.Logined = false;
+            State.IsLogin = false;
             State.Viewer = null;
             await WriteStateAsync();
             Console.WriteLine($"{UserId} logout success");
@@ -127,7 +132,7 @@ namespace ChangFei.Grains.Grains
 
         public async Task NewMessageAsync(Message message)
         {
-            if (State.Logined)
+            if (State.IsLogin)
             {
                 //if user is online, call message observer.
                 State.Viewer.NewMessageAsync(message);
@@ -137,7 +142,7 @@ namespace ChangFei.Grains.Grains
             }
             else
             {
-                //if user is not offline, Store message to queue.
+                //if user is not login, Store message to queue.
                 State.UnReadMessages.Enqueue(message);
                 await WriteStateAsync();
             }

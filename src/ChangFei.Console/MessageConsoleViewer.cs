@@ -11,8 +11,10 @@ namespace ChangFei.Console
     {
         public void NewMessageAsync(Message message)
         {
+            var originalColor = System.Console.ForegroundColor;
             System.Console.ForegroundColor = ConsoleColor.Green;
-            System.Console.WriteLine($"{message.TargetId}: {message.Content}");
+            System.Console.WriteLine($"{message.Sender}: {((TextMessageContent)message.MessageContent).Content}");
+            System.Console.ForegroundColor = originalColor;
         }
     }
 }

@@ -19,7 +19,6 @@ namespace ChangFei.Console
         private IMessageViewer _viewer;
         private string _userId;
         private string _targetUserId;
-        private bool _inChat;
 
         public ShellHostedService(IClusterClient client, IHost host)
         {
@@ -58,23 +57,34 @@ namespace ChangFei.Console
                 }
                 else if (command == "/exit")
                 {
+                    System.Console.WriteLine($"Exit chat with {_targetUserId} =====================================================");
                     _targetUserId = string.Empty;
-                    _inChat = false;
-                    System.Console.WriteLine($"=====================================================");
+                    System.Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (command == "/chat")
+                else if (command.StartsWith("/chat"))
                 {
-                    var match = Regex.Match(command, @"/login (?<userId>\w{1,100})");
+                    if (!IsLogin())
+                    {
+                        System.Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("You need to login first");
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    var match = Regex.Match(command, @"/chat (?<userId>\w{1,100})");
                     if (match.Success)
                     {
                         _targetUserId = match.Groups["userId"].Value;
-                        _inChat = true;
-                        System.Console.WriteLine($"=====================================================");
+                        System.Console.WriteLine($"Start chat with {_targetUserId} =====================================================");
                     }
                 }
-
                 else if (command.StartsWith("/login"))
                 {
+                    if (IsLogin())
+                    {
+                        System.Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("You have already login");
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                        continue;
+                    }
                     var match = Regex.Match(command, @"/login (?<userId>\w{1,100})");
                     if (match.Success)
                     {
@@ -86,30 +96,39 @@ namespace ChangFei.Console
                         }
                         await _userGrain.LoginAsync(_viewer);
                         System.Console.WriteLine($"The current user is now [{_userId}]");
-                        var unReadMessages = await _userGrain.GetUnReadMessages(100);
-                        System.Console.WriteLine($"Receive offline messages: {unReadMessages.Count}");
-                        foreach (var message in unReadMessages)
-                        {
-                            //System.Console.WriteLine($"Receive {message.TargetId}: {message.Content}");
-                        }
                     }
                 }
-                else if (command.StartsWith("/send"))
+                else
                 {
-                    var match = Regex.Match(command, @"/send (?<message>.+)");
-                    if (match.Success)
+                    if (IsInChat())
                     {
-                        var message = match.Groups["message"].Value;
-                        await _userGrain.SendMessageAsync(Message.CreateText(_userId,_targetUserId,message));
-                        System.Console.ForegroundColor = ConsoleColor.Blue;
-                        System.Console.WriteLine($"{_userId}: {message}");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Invalid send. Try again or type /help for a list of commands.");
+                        await _userGrain.SendMessageAsync(Message.CreateText(_userId, _targetUserId, command));
+                        System.Console.ForegroundColor = ConsoleColor.Yellow;
+                        System.Console.WriteLine($"{_userId}: {command}");
+                        System.Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
             }
+        }
+
+        private bool IsLogin()
+        {
+            if (string.IsNullOrEmpty(_userId))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsInChat()
+        {
+            if (string.IsNullOrEmpty(_targetUserId))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void ShowHelp(bool title = false)
@@ -122,9 +141,9 @@ namespace ChangFei.Console
             }
             System.Console.WriteLine("/help: Shows this list.");
             System.Console.WriteLine("/login <userId>: Login a active account.");
+            System.Console.WriteLine("/logout: Logout current account.");
             System.Console.WriteLine("/chat <userId>: Start chat with account.");
             System.Console.WriteLine("/exit: Exit account chat.");
-            System.Console.WriteLine("/send <message>: Send a message to the active account.");
         }
     }
 }

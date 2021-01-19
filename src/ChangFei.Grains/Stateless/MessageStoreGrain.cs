@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ChangFei.Grains.Entity;
+using ChangFei.Core.Message;
 using ChangFei.Grains.Repositories;
 using ChangFei.Interfaces;
 using Orleans;
@@ -17,13 +17,9 @@ namespace ChangFei.Grains.Stateless
             _dataRepository = dataRepository;
         }
 
-        public Task StoreMessageAsync()
+        public Task StoreMessageAsync(Message message)
         {
-            var messageRecord = new MessageRecord("111")
-            {
-
-            };
-            return _dataRepository.InsertAsync(messageRecord);
+            return _dataRepository.InsertAsync(message);
         }
     }
 }

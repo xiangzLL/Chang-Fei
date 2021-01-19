@@ -90,7 +90,7 @@ namespace ChangFei.Console
                         System.Console.WriteLine($"Receive offline messages: {unReadMessages.Count}");
                         foreach (var message in unReadMessages)
                         {
-                            System.Console.WriteLine($"Receive {message.TargetId}: {message.Content}");
+                            //System.Console.WriteLine($"Receive {message.TargetId}: {message.Content}");
                         }
                     }
                 }
@@ -100,7 +100,7 @@ namespace ChangFei.Console
                     if (match.Success)
                     {
                         var message = match.Groups["message"].Value;
-                        await _userGrain.SendMessageAsync(new TextMessage(_userId, _targetUserId, message));
+                        await _userGrain.SendMessageAsync(Message.CreateText(_userId,_targetUserId,message));
                         System.Console.ForegroundColor = ConsoleColor.Blue;
                         System.Console.WriteLine($"{_userId}: {message}");
                     }

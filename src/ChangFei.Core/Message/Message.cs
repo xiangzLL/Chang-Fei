@@ -1,70 +1,112 @@
 ﻿using System;
+using ChangFei.Core.Utilities;
 
 namespace ChangFei.Core.Message
 {
     public enum MessageType
     {
-        /// <summary>
-        /// Text
-        /// </summary>
         Text,
-        /// <summary>
-        /// Image
-        /// </summary>
         Image,
-        /// <summary>
-        /// Video request
-        /// </summary>
-        Video,
-        /// <summary>
-        /// Audio request
-        /// </summary>
-        Audio,
-        /// <summary>
-        /// System message
-        /// </summary>
-        System
+        File
     }
 
     /// <summary>
-    /// Base message
+    /// Message record
     /// </summary>
-    public abstract class Message
+    public class Message
     {
-        public string UserId { get; private set; }
+        public string Id { get; }
+        /// <summary>
+        /// Sender user id
+        /// </summary>
+        public string Sender { get; set; }
 
-        public string TargetId { get; private set; }
+        /// <summary>
+        /// Recipient user id
+        /// </summary>
+        public string Recipient { get; set; }
 
-        public MessageType MessageType { get; }
+        public object MessageContent { get; set; }
 
-        public string Content { get; protected set; }
-
-        public string SendTime { get; private set; }
-
-        public string ReceiveTime { get; private set; }
+        public string SendTime { get; set; }
 
         public bool IsGroup { get; set; }
 
-        protected Message(string userId,string targetId, MessageType messageType)
+        public Message(string sender,string recipient,bool isGroup=false)
         {
-            UserId = userId;
-            TargetId = targetId;
-            MessageType = messageType;
-            SendTime = DateTime.Now.ToString("yyyy-mm-dd hh:MM:ss");
+            Id = IdHelper.Generate<string>();
+            SendTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            Sender = sender;
+            Recipient = recipient;
+            IsGroup = isGroup;
         }
 
         /// <summary>
-        /// Convert message to response message
+        /// Create a text message
         /// </summary>
-        /// <param name="originalMessage">original message</param>
-        /// <returns>Response message</returns>
-        public static Message ConvertToResponseMessage(Message originalMessage)
+        /// <param name="sender"></param>
+        /// <param name="recipient"></param>
+        /// <param name="content"></param>
+        /// <param name="isGroup"></param>
+        /// <returns></returns>
+        public static Message CreateText(string sender, string recipient, string content, bool isGroup = false)
         {
-            var newUserId = originalMessage.TargetId;
-            originalMessage.TargetId = originalMessage.UserId;
-            originalMessage.UserId = newUserId;
-            return originalMessage;
+            var message = new Message(sender, recipient, isGroup)
+            {
+                MessageContent = new TextMessageContent(content)
+            };
+            return message;
         }
 
+        /// <summary>
+        /// Create a image message
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="recipient"></param>
+        /// <param name="thumbnail"></param>
+        /// <param name="originalUrl"></param>
+        /// <param name="isGroup"></param>
+        /// <returns></returns>
+        public static Message CreateImage(string sender, string recipient, byte[] thumbnail,string originalUrl,bool isGroup = false)
+        {
+            var message = new Message(sender, recipient, isGroup)
+            {
+                MessageContent = new ImageMessageContent(thumbnail,originalUrl)
+            };
+            return message;
+        }
+    }
+
+    public class BaseMessageContent
+    {
+        public MessageType MessageType { get; }
+
+        public BaseMessageContent(MessageType messageType)
+        {
+            MessageType = messageType;
+        }
+    }
+
+    public class TextMessageContent : BaseMessageContent
+    {
+        public string Content;
+
+        public TextMessageContent(string content) : base(MessageType.Text)
+        {
+            Content = content;
+        }
+    }
+
+    public class ImageMessageContent : BaseMessageContent
+    {
+        public byte[] Thumbnail;
+
+        public string OriginalUrl;
+
+        public ImageMessageContent(byte[] thumbnail, string originalUrl) : base(MessageType.Image)
+        {
+            Thumbnail = thumbnail;
+            OriginalUrl = originalUrl;
+        }
     }
 }

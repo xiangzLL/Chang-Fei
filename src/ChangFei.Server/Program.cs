@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using ChangFei.Grains.Repositories;
+using ChangFei.Silo.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -57,6 +59,8 @@ namespace ChangFei.Silo
             services.AddOptions();
             services.Configure<PersistenceOptions>(context.Configuration.GetSection("persistenceOptions"));
             services.Configure<ServerOptions>(context.Configuration.GetSection("serverOptions"));
+
+            services.AddTransient<IMessageRepository, MessageRepository>();
         }
     }
 }

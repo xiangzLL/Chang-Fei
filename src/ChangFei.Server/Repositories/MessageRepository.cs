@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ChangFei.Grains.Entity;
+using ChangFei.Core.Message;
 using ChangFei.Grains.Repositories;
 using Microsoft.Extensions.Options;
 
@@ -14,9 +14,9 @@ namespace ChangFei.Silo.Repositories
             _context = new MessageDataContext(settings);
         }
 
-        public Task InsertAsync(MessageRecord messageRecord)
+        public Task InsertAsync(Message message)
         {
-            return _context.MessageRecords.InsertOneAsync(messageRecord);
+            return _context.Messages.InsertOneAsync(message);
         }
     }
 }

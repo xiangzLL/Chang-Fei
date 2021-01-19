@@ -95,6 +95,7 @@ namespace ChangFei.Console
                             _viewer = await _client.CreateObjectReference<IMessageViewer>(new MessageConsoleViewer());
                         }
                         await _userGrain.LoginAsync(_viewer);
+                        System.Console.Title = _userId;
                         System.Console.WriteLine($"The current user is now [{_userId}]");
                     }
                 }

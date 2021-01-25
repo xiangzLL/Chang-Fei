@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChangFei.Gateway.Model
+﻿namespace ChangFei.Route.Model
 {
     public class User
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ChangFei.Gateway.Model
+namespace ChangFei.Route.Model
 {
     public class Group
     {

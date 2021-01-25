@@ -3,17 +3,13 @@ using System.Collections.Generic;
 
 namespace ChangFei.Route.Model
 {
-    public class Group
+    public class Group:BaseEntity
     {
-        public string Id { get; set; }
-
         public string GroupName { get; set; }
 
         public string Notice { get; set; }
 
         public List<GroupUser> Users { get; set; }
-
-        public DateTime CreateTime { get; set; }
     }
 
     public class GroupUser
@@ -22,14 +18,16 @@ namespace ChangFei.Route.Model
 
         public string Name { get; set; }
 
-        public string AvatarUrl { get; set; }
-
         public string UserNickName { get; set; }
 
         public DateTime JoinTime { get; set; }
 
         public DateTime ExitTime { get; set; }
 
-        public bool IsExit { get; set; }
+        public bool IsDeleted { get; set; }
+
+        public bool IsOwner { get; set; }
+
+        public bool IsManager { get; set; }
     }
 }

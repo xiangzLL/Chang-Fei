@@ -15,13 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Grains", "ChangFei
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Interfaces", "ChangFei.Interfaces\ChangFei.Interfaces.csproj", "{4496C9F2-F009-4D92-A142-AC2737EC7176}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Gateway", "ChangFei.Gateway\ChangFei.Gateway.csproj", "{BD4AE211-C8A9-4AEF-92C0-4804D331A057}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Route", "ChangFei.Gateway\ChangFei.Route.csproj", "{BD4AE211-C8A9-4AEF-92C0-4804D331A057}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Client", "ChangFei.Client\ChangFei.Client.csproj", "{283FD92E-1DEC-4A6D-98DE-AA28BBD9C3E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangFei.Console", "ChangFei.Console\ChangFei.Console.csproj", "{FFAFDA8D-C3FD-40E4-B18E-56652A767550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Console", "ChangFei.Console\ChangFei.Console.csproj", "{FFAFDA8D-C3FD-40E4-B18E-56652A767550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangFei.Core", "ChangFei.Core\ChangFei.Core.csproj", "{31843F40-D5F0-4981-BE92-7CDBF852BAF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangFei.Core", "ChangFei.Core\ChangFei.Core.csproj", "{31843F40-D5F0-4981-BE92-7CDBF852BAF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

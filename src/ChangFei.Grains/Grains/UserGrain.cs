@@ -83,6 +83,11 @@ namespace ChangFei.Grains.Grains
             return Task.FromResult(State.UnReadMessages.ToImmutableList());
         }
 
+        public Task CancelMessage(int messageId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task LoginAsync(IMessageViewer viewer)
         {
             State.IsLogin = true;
@@ -111,9 +116,10 @@ namespace ChangFei.Grains.Grains
             await Task.WhenAll(groupGrains.Select(_ => _.SubscribeAsync(UserId, this.AsReference<IMessageSubscriber>())));
         }
 
-        public Task SubscribeAsync(string groupId)
+        public async Task SubscribeAsync(string groupId)
         {
-            throw new NotImplementedException();
+            var groupGrain = GrainFactory.GetGrain<IGroupGrain>(groupId);
+            await groupGrain.SubscribeAsync(UserId, this.AsReference<IMessageSubscriber>());
         }
 
         public Task UnsubscribeAsync(List<string> groupIds)
@@ -121,9 +127,10 @@ namespace ChangFei.Grains.Grains
             throw new NotImplementedException();
         }
 
-        public Task UnSubscribeAsync(string userId)
+        public async Task UnSubscribeAsync(string groupId)
         {
-            throw new NotImplementedException();
+            var groupGrain = GrainFactory.GetGrain<IGroupGrain>(groupId);
+            await groupGrain.UnSubscribeAsync(groupId);
         }
 
         #endregion

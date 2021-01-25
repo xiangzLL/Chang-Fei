@@ -47,7 +47,7 @@ namespace ChangFei.Grains.Grains
             return Task.CompletedTask;
         }
 
-        public Task UnsubscribeAsync(string userId)
+        public Task UnSubscribeAsync(string userId)
         {
             State.Users.Remove(userId);
             return Task.CompletedTask;

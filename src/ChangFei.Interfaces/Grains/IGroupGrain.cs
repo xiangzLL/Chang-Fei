@@ -6,6 +6,6 @@ namespace ChangFei.Interfaces.Grains
     {
         Task SubscribeAsync(string userId, IMessageSubscriber viewer);
 
-        Task UnsubscribeAsync(string userId);
+        Task UnSubscribeAsync(string userId);
     }
 }

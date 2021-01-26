@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChangFei.Route.Controllers
 {
-    public class UserController:Controller
+    [ApiController]
+    public class UserController:ControllerBase
     {
         public UserController()
         {

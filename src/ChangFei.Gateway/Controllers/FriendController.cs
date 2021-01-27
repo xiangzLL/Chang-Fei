@@ -5,16 +5,11 @@ namespace ChangFei.Route.Controllers
 {
     [Route("")]
     [ApiController]
-    public class GroupController:Controller
+    public class FriendController:ControllerBase
     {
+        [Route("")]
         [HttpGet]
-        public Task GetGroupsAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        [HttpPost]
-        public Task CreateGroupAsync()
+        public Task GetFriends()
         {
             return Task.CompletedTask;
         }

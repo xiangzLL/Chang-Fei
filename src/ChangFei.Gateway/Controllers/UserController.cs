@@ -12,15 +12,9 @@ namespace ChangFei.Route.Controllers
         }
 
         [HttpPost]
-        public Task ChangeAvatar(string userId,string avatarData)
+        public Task ChangeAvatar(string avatarData)
         {
             //Store image to oss
-            return Task.CompletedTask;
-        }
-
-        [HttpPut]
-        public Task CreateGroup()
-        {
             return Task.CompletedTask;
         }
     }

@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using ChangFei.Route.Hub;
 using ChangFei.Route.Infrastructure.HostedService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +27,20 @@ namespace ChangFei.Route
             services.AddSingleton<ClusterClientHostedService>();
             services.AddSingleton<IHostedService>(_ => _.GetService<ClusterClientHostedService>());
             services.AddSingleton(_ => _.GetService<ClusterClientHostedService>().Client);
+
+            services.AddAuthentication(options => { })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "";
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query[""];
+                            return Task.CompletedTask;
+                        }
+                    };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
